@@ -90,9 +90,23 @@ namespace PokemonApp
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            //Guardamos los datos de la fila seleccionada
             dominio.Pokemon seleccionado = (dominio.Pokemon)dgvPokemon.CurrentRow.DataBoundItem;
-            frmAltaPokemon modificar = new frmAltaPokemon(seleccionado);
+
+            //Listamos todos para poder buscar el elegido
+            PokemonNegocio negocio = new PokemonNegocio();
+            List<dominio.Pokemon> lista = negocio.Listar();
+            
+            //Filtramos el Pokemon que necesitamos
+            dominio.Pokemon aModificar = lista.Find(J => J.Id == seleccionado.Id);
+            
+            //Creamos nueva ventana
+            frmAltaPokemon modificar = new frmAltaPokemon(aModificar);
+
+            //Mostramos ventana
             modificar.ShowDialog();
+
+            //Cargamos Grid en caso de actualizaciones
             cargar();
         }
     }
