@@ -21,7 +21,7 @@ namespace negocio
 
             try
             {
-                datoSQL.setearQuery("select P.Id, P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion as Tipo, D.Descripcion as Debilidad from POKEMONS P, ELEMENTOS E, ELEMENTOS D where P.IdTipo = E.Id AND P.IdEvolucion = D.Id");
+                datoSQL.setearQuery("select P.Id, P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion as Tipo, P.IdTipo, D.Descripcion as Debilidad, P.IdEvolucion from POKEMONS P, ELEMENTOS E, ELEMENTOS D where P.IdTipo = E.Id AND P.IdEvolucion = D.Id");
                 datoSQL.ejecutarLectura();
 
                 while (datoSQL.Reader.Read())
@@ -45,10 +45,12 @@ namespace negocio
                     
                     aux.Tipo = new Elemento();
                     aux.Tipo.Descripcion = (string)datoSQL.Reader["Tipo"];
-                    
+                    aux.Tipo.Id = (int)datoSQL.Reader["IdTipo"];
+
                     aux.Debilidad = new Elemento();
                     aux.Debilidad.Descripcion = (string)datoSQL.Reader["Debilidad"];
-                    
+                    aux.Debilidad.Id = (int)datoSQL.Reader["IdEvolucion"];
+
                     lista.Add(aux);
                 }
 
