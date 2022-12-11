@@ -107,17 +107,22 @@ namespace Pokemon
             try
             {
                 cmbTipo.DataSource = negocio.Listar();
-                cmbDebilidad.DataSource = negocio.Listar();
+                cmbTipo.ValueMember = "Id";
+                cmbTipo.DisplayMember = "Descripcion";
 
-                if(pokemon != null) //Cargamos datos del objeto del Constructor
+                cmbDebilidad.DataSource = negocio.Listar();
+                cmbDebilidad.ValueMember = "Id";
+                cmbDebilidad.DisplayMember = "Descripcion";
+
+                if (pokemon != null) //Cargamos datos del objeto del Constructor
                 {
                     txtNumero.Text = pokemon.Numero.ToString();
                     txtNombre.Text = pokemon.Nombre;
                     txtDescripcion.Text = pokemon.Descripcion;
                     txtUrlImagen.Text = pokemon.UrlImagen;
                     cargarimagen(pokemon.UrlImagen);
-                    cmbTipo.SelectedItem = pokemon.Tipo;
-                    cmbDebilidad.SelectedItem = pokemon.Debilidad;
+                    cmbTipo.SelectedValue = pokemon.Tipo.Id;
+                    cmbDebilidad.SelectedValue = pokemon.Debilidad.Id;
                     btnAceptar.Text = "Modificar";
                 }
                 else
