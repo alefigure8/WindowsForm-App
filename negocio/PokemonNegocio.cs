@@ -204,71 +204,70 @@ namespace negocio
 
             try
             {
-                string filtro = "";
+                string consulta = "select P.Id, P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion as Tipo, P.IdTipo, D.Descripcion as Debilidad, P.IdEvolucion from POKEMONS P, ELEMENTOS E, ELEMENTOS D where P.IdTipo = E.Id AND P.IdEvolucion = D.Id AND P.Activo = 1 AND ";
 
                 switch (campo)
                 {
                     case "Número":
                         if (criterio == "Mayor a")
                         {
-                            filtro = $"Numero > {busqueda}";
+                            consulta += $"Numero > {busqueda}";
                         }
                         else if(criterio == "Menor a")
                         {
-                            filtro = $"Numero < {busqueda}";
+                            consulta += $"Numero < {busqueda}";
                         }
                         else
                         {
-                            filtro = $"Numero = {busqueda}";
+                            consulta += $"Numero = {busqueda}";
                         }
                         break;
                     case "Nombre":
                         if (criterio == "Comienza con")
                         {
-                            filtro = $"P.Nombre LIKE '{busqueda}%'";
+                            consulta += $"P.Nombre LIKE '{busqueda}%'";
                         }
                         else if (criterio == "Termina con")
                         {
-                            filtro = $"P.Nombre LIKE '%{busqueda}'";
+                            consulta += $"P.Nombre LIKE '%{busqueda}'";
                         }
                         else
                         {
-                            filtro = $"P.Nombre LIKE '%{busqueda}%'";
+                            consulta += $"P.Nombre LIKE '%{busqueda}%'";
                         }
                         break;
                     case "Descripción":
                         if (criterio == "Comienza con")
                         {
-                            filtro = $"P.Descripción LIKE '{busqueda}%'";
+                            consulta += $"P.Descripción LIKE '{busqueda}%'";
                         }
                         else if (criterio == "Termina con")
                         {
-                            filtro = $"P.Descripción LIKE '%{busqueda}'";
+                            consulta += $"P.Descripción LIKE '%{busqueda}'";
                         }
                         else
                         {
-                            filtro = $"P.Descripción LIKE '%{busqueda}%'";
+                            consulta += $"P.Descripción LIKE '%{busqueda}%'";
                         }
                         break;
                     case "Tipo":
                         if (criterio == "Comienza con")
                         {
-                            filtro = $"E.Descripcion LIKE '{busqueda}%'";
+                            consulta += $"E.Descripcion LIKE '{busqueda}%'";
                         }
                         else if (criterio == "Termina con")
                         {
-                            filtro = $"E.Descripcion LIKE '%{busqueda}'";
+                            consulta += $"E.Descripcion LIKE '%{busqueda}'";
                         }
                         else
                         {
-                            filtro = $"E.Descripcion LIKE '%{busqueda}%'";
+                            consulta += $"E.Descripcion LIKE '%{busqueda}%'";
                         }
                         break;
                     default:
                         return lista = null;
                 }
 
-                string consulta = $"select P.Id, P.Numero, P.Nombre, P.Descripcion, P.UrlImagen, E.Descripcion as Tipo, P.IdTipo, D.Descripcion as Debilidad, P.IdEvolucion from POKEMONS P, ELEMENTOS E, ELEMENTOS D where P.IdTipo = E.Id AND P.IdEvolucion = D.Id AND P.Activo = 1 AND {filtro}";
                 datoSQL.setearQuery(consulta);
                 datoSQL.ejecutarLectura();
 
