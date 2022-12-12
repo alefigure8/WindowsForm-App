@@ -35,10 +35,10 @@ namespace Pokemon
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            string numero = txtNumero.Text;
-            string nombre = txtNombre.Text;
-            string descripcion = txtDescripcion.Text;
-            string urlImagen = txtUrlImagen.Text;
+            string numero = txtNumero.Text.Trim();
+            string nombre = txtNombre.Text.Trim();
+            string descripcion = txtDescripcion.Text.Trim();
+            string urlImagen = txtUrlImagen.Text.Trim();
             Elemento tipo = (Elemento)cmbTipo.SelectedItem;
             Elemento debilidad = (Elemento)cmbDebilidad.SelectedItem;
             
@@ -58,28 +58,54 @@ namespace Pokemon
                 pokemon.Tipo = tipo;
                 pokemon.Debilidad = debilidad;
 
-                if (btnAceptar.Text == "Aceptar")
+                if (pokemon.Id == 0)
                 {
+                    if (negocio.ExistePokemon(nombre))
+                    {
+                        MessageBoxButtons btn = MessageBoxButtons.OKCancel;
+                        DialogResult result = MessageBox.Show("El Pokemon que intenta Ingresar Ya existe. ¿Desea Activarlo?", "Pokemon ya esiste", btn);
 
-                    try
-                    {
-                  
-                        //AGREGAR
-                        negocio.Agregar(pokemon);
-                        MessageBox.Show("Pokemon agregado con exito");
-                        this.Close();
+                        if (result == DialogResult.OK)
+                        {
+                            try
+                            {
+                                int row = negocio.Activar(pokemon.Nombre);
+
+                                if(row > 0)
+                                {
+                                    MessageBox.Show("Pokemon activado con exito");
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Pokemon no pude ser activado");
+                                }
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show(ex.ToString());
+                        try
+                        {
+                            negocio.Agregar(pokemon);
+                            MessageBox.Show("Pokemon agregado con exito");
+                            this.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
                     }
                 }
                 else
                 {
                     try
                     {
-                        pokemon.Id = this.pokemon.Id;
-
                         int rows = negocio.Modificar(pokemon);
 
                         if (rows == 1)
