@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,16 @@ using System.Windows.Forms;
 using dominio;
 using negocio;
 using PokemonApp;
+using System.IO;
+using System.Configuration;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Pokemon
 {
+
     public partial class frmAltaPokemon : Form
     {
+        private OpenFileDialog file = null;
         private dominio.Pokemon pokemon = null;
         public frmAltaPokemon()
         {
@@ -81,10 +86,9 @@ namespace Pokemon
                                     MessageBox.Show("Pokemon no pude ser activado");
                                 }
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-
-                                throw;
+                                MessageBox.Show(ex.Message);
                             }
                         }
                     }
@@ -92,13 +96,29 @@ namespace Pokemon
                     {
                         try
                         {
+
+                            try
+                            {
+                                if (file != null && !(txtUrlImagen.Text.ToLower().Contains("http")))
+                                {
+                                    copyImage();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                MessageBox.Show("Cambie la imagen y luego intenté guardar nuevamente");
+                                file = null;
+                                txtUrlImagen.Text = "";
+                                return;
+                            }
+
                             negocio.Agregar(pokemon);
                             MessageBox.Show("Pokemon agregado con exito");
                             this.Close();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.ToString());
+                            MessageBox.Show(ex.Message);
                         }
                     }
                 }
@@ -121,7 +141,7 @@ namespace Pokemon
                     catch (Exception ex)
                     {
 
-                        MessageBox.Show(ex.ToString());
+                        MessageBox.Show(ex.Message);
                     }
                 }
             }
@@ -178,6 +198,44 @@ namespace Pokemon
             {
                 pbCargarImagen.Load("https://i0.wp.com/thealmanian.com/wp-content/uploads/2019/01/product_image_thumbnail_placeholder.png");
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnAgregarImagen_Click(object sender, EventArgs e)
+        {
+            file = new OpenFileDialog();
+            file.Filter = "All|*|Bitmap Image (.bmp)|*.bmp|Gif Image (.gif)|*.gif|JPEG Image (.jpeg)|*.jpeg|Png Image (.png)|*.png|Tiff Image (.tiff)|*.tiff|Wmf Image (.wmf)|*.wmf";
+
+            if (file.ShowDialog() == DialogResult.OK)
+            {
+                txtUrlImagen.Text = file.FileName;
+                cargarimagen(file.FileName);
+            }
+        }
+
+        private void copyImage()
+        {
+            string path = ConfigurationManager.AppSettings["images-folder"] + file.SafeFileName;
+            try
+            {
+                File.Copy(file.FileName, path);
+                pokemon.UrlImagen = path;
+            }
+            catch (Exception ex)
+            {
+                DialogResult result = MessageBox.Show("El archivo ya existe. ¿Desea Remplazarlo?", "Ya existe", MessageBoxButtons.OKCancel);
+
+                if (result == DialogResult.OK)
+                {
+                    File.Delete(path);
+                    File.Copy(file.FileName, path);
+                    pokemon.UrlImagen = path;
+                }
+                else
+                {
+                    throw ex;
+                }
+
             }
         }
     }

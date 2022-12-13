@@ -43,6 +43,7 @@
             this.txtDebilidad = new System.Windows.Forms.Label();
             this.cmbDebilidad = new System.Windows.Forms.ComboBox();
             this.pbCargarImagen = new System.Windows.Forms.PictureBox();
+            this.btnAgregarImagen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbCargarImagen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -169,18 +170,29 @@
             // 
             // pbCargarImagen
             // 
-            this.pbCargarImagen.Location = new System.Drawing.Point(269, 41);
+            this.pbCargarImagen.Location = new System.Drawing.Point(275, 41);
             this.pbCargarImagen.Name = "pbCargarImagen";
             this.pbCargarImagen.Size = new System.Drawing.Size(224, 186);
             this.pbCargarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCargarImagen.TabIndex = 14;
             this.pbCargarImagen.TabStop = false;
             // 
+            // btnAgregarImagen
+            // 
+            this.btnAgregarImagen.Location = new System.Drawing.Point(245, 117);
+            this.btnAgregarImagen.Name = "btnAgregarImagen";
+            this.btnAgregarImagen.Size = new System.Drawing.Size(24, 23);
+            this.btnAgregarImagen.TabIndex = 15;
+            this.btnAgregarImagen.Text = "...";
+            this.btnAgregarImagen.UseVisualStyleBackColor = true;
+            this.btnAgregarImagen.Click += new System.EventHandler(this.btnAgregarImagen_Click);
+            // 
             // frmAltaPokemon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 262);
+            this.ClientSize = new System.Drawing.Size(515, 262);
+            this.Controls.Add(this.btnAgregarImagen);
             this.Controls.Add(this.pbCargarImagen);
             this.Controls.Add(this.cmbDebilidad);
             this.Controls.Add(this.txtDebilidad);
@@ -223,5 +235,6 @@
         private System.Windows.Forms.Label txtDebilidad;
         private System.Windows.Forms.ComboBox cmbDebilidad;
         private System.Windows.Forms.PictureBox pbCargarImagen;
+        private System.Windows.Forms.Button btnAgregarImagen;
     }
 }
